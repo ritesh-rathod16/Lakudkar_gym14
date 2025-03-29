@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakudkar Gym - Transform Your Fitness Journey</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #121212;
+            --secondary: #1a1a1a;
+            --accent: #d4af37;
+            --text: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --card-bg: rgba(30, 30, 30, 0.7);
+            --hover-bg: rgba(212, 175, 55, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: url('https://i.pinimg.com/736x/de/8f/57/de8f579651b2e0a6cddbd359182f95ad.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader-logo {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .preloader-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            animation: pulse 2s infinite, rotate 8s infinite linear;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(212, 175, 55, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .preloader-text {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInOut 2s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container img {
+            height: 50px;
+            width: auto;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .logo-container img:hover {
+            transform: rotate(10deg);
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: var(--transition);
+            position: relative;
+            padding: 5px 0;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.7) 100%);
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-btn {
+            padding: 15px 40px;
+            background-color: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateY(30px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .hero-btn:hover {
+            background-color: #e6c34d;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        /* Three.js Container */
+        #threejs-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* Gym Showcase */
+        .gym-showcase {
+            padding: 100px 5%;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 50px;
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+
+        .gym-images {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            margin-bottom: 80px;
+        }
+
+        .gym-image-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .gym-image-container.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .gym-image {
+            flex: 1;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .gym-image:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        .gym-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gym-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .gym-image-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .gym-image-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .gym-image-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Membership Plans */
+        .membership-plans {
+            padding: 100px 5%;
+            background-color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .plans-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .plan-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 40px 30px;
+            width: 350px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: var(--transition);
+            opacity: 0;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .plan-card:hover::before {
+            opacity: 1;
+            animation: shine 1.5s;
+        }
+
+        @keyframes shine {
+            0% { left: -50%; opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { left: 150%; opacity: 0; }
+        }
+
+        .plan-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .plan-card .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--accent);
+        }
+
+        .plan-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .plan-card ul li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+            line-height: 1.5;
+        }
+
+        .plan-card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .plan-btn {
+            padding: 12px 30px;
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .plan-btn:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Class Schedules */
+        .class-schedules {
+            padding: 100px 5%;
+            text-align: center;
+        }
+
+        .schedule-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        .schedule-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .schedule-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .schedule-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .schedule-image {
+            flex: 1;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .schedule-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Diet Plan */
+        .diet-plan {
+            padding: 100px 5%;
+            background-color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .diet-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        .diet-image {
+            flex: 0 0 45%;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .diet-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .diet-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .diet-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .diet-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .diet-details-btn {
+            padding: 12px 30px;
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+
+        .diet-details-btn:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Workout Routine */
+        .workout-routine {
+            padding: 100px 5%;
+            text-align: center;
+        }
+
+        .workout-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .workout-tab {
+            padding: 12px 30px;
+            background-color: transparent;
+            color: var(--text);
+            border: 2px solid var(--accent);
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .workout-tab.active {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .workout-tab:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .workout-content {
+            display: none;
+        }
+
+        .workout-content.active {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .workout-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .workout-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .workout-text p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .workout-image {
+            flex: 0 0 45%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .workout-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .workout-details-btn {
+            padding: 12px 30px;
+            background-color: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 20px;
+        }
+
+        .workout-details-btn:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Location */
+        .location {
+            padding: 100px 5%;
+            background-color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .location-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        .location-map {
+            flex: 1;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .location-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .location-info {
+            flex: 1;
+            text-align: left;
+        }
+
+        .location-info h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .location-info p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .location-info i {
+            color: var(--accent);
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Parking */
+        .parking {
+            padding: 100px 5%;
+            text-align: center;
+        }
+
+        .parking-image {
+            width: 60%;
+            margin: 50px auto 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .parking-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Contact Form */
+        .contact {
+            padding: 100px 5%;
+            background-color: rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 50px auto 0;
+            background: var(--card-bg);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            grid-column: span 2;
+            padding: 15px;
+            background-color: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background-color: #e6c34d;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 50px 5% 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: var(--text);
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: url('https://i.pinimg.com/474x/65/1f/00/651f00fd2fdf4d3774ce93711ae8b866.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            margin: 5% auto;
+            padding: 40px;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 15px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent);
+            color: var(--text);
+        }
+
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            z-index: -1;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .modal-header h2 {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            line-height: 1.8;
+        }
+
+        .modal-body h3 {
+            font-size: 1.5rem;
+            margin: 25px 0 15px;
+            color: var(--accent);
+        }
+
+        .modal-body ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .modal-body ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .gym-image-container,
+            .schedule-container,
+            .diet-container,
+            .workout-content.active,
+            .location-container {
+                flex-direction: column;
+            }
+            
+            .gym-image,
+            .schedule-image,
+            .diet-image,
+            .workout-image,
+            .location-map {
+                width: 100%;
+            }
+            
+            .gym-image-content,
+            .schedule-content,
+            .diet-content,
+            .workout-text,
+            .location-info {
+                text-align: center;
+            }
+            
+            .contact-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            
+            .submit-btn {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 3%;
+            }
+            
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                gap: 15px;
+                z-index: 999;
+            }
+            
+            nav ul.show {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-btn {
+                padding: 12px 30px;
+            }
+            
+            .plans-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .plan-card {
+                width: 100%;
+            }
+            
+            .parking-image {
+                width: 100%;
+            }
+            
+            .footer-column {
+                min-width: 100%;
+                text-align: center;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Particle */
+        .particle {
+            position: absolute;
+            background-color: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-logo">
+            <img src="https://media-hosting.imagekit.io/c1ab74a3f47f431f/gym%20logo.jpg" alt="Lakudkar Gym Logo">
+        </div>
+        <div class="preloader-text">Welcome to Lakudkar Gym</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <img src="https://media-hosting.imagekit.io/c1ab74a3f47f431f/gym%20logo.jpg" alt="Lakudkar Gym Logo">
+            <div class="logo-text">Lakudkar Gym</div>
+        </div>
+        <nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#membership">Membership Plans</a></li>
+                <li><a href="#location">Location</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div id="threejs-container"></div>
+        <h1 class="fade-in">Transform Your Fitness Journey Today!</h1>
+        <p class="fade-in delay-1">Personalized Training • Expert Coaches • Results Guaranteed</p>
+        <button class="hero-btn fade-in delay-2">Join Now</button>
+    </section>
+
+    <!-- Gym Showcase -->
+    <section class="gym-showcase">
+        <h2 class="section-title fade-in">Our Gym</h2>
+        <div class="gym-images">
+            <div class="gym-image-container fade-in">
+                <div class="gym-image">
+                    <img src="https://i.pinimg.com/736x/f5/51/48/f55148ad2ef92de8597008b60bcd29a8.jpg" alt="Gym Interior">
+                </div>
+                <div class="gym-image-content">
+                    <h3>State-of-the-Art Equipment</h3>
+                    <p>Our gym is equipped with the latest fitness machines and free weights to help you achieve your fitness goals. From cardio machines to strength training equipment, we have everything you need for a complete workout.</p>
+                </div>
+            </div>
+            <div class="gym-image-container reverse fade-in delay-1">
+                <div class="gym-image">
+                    <img src="https://i.pinimg.com/736x/f7/b0/5d/f7b05d5bb3f523a73aa01efeed5be53d.jpg" alt="Gym Training">
+                </div>
+                <div class="gym-image-content">
+                    <h3>Expert Training</h3>
+                    <p>Our certified trainers are here to guide you through every step of your fitness journey. Whether you're a beginner or an advanced athlete, we provide personalized training programs to help you reach your potential.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Plans -->
+    <section class="membership-plans" id="membership">
+        <h2 class="section-title fade-in">Membership Plans</h2>
+        <div class="plans-container">
+            <div class="plan-card fade-in">
+                <h3>Gym Membership</h3>
+                <div class="price">₹1,500/-</div>
+                <ul>
+                    <li>🏋️‍♂️ STRENGTH TRAINING</li>
+                    <li>⚡ FUNCTIONAL & CROSSFIT TRAINING</li>
+                    <li>📊 CUSTOMIZED WORKOUT PLANNING</li>
+                    <li>🍎 CUSTOMIZED DIET CONSULTATION</li>
+                    <li>24/7 Gym Access</li>
+                    <li>Locker Facilities</li>
+                </ul>
+                <button class="plan-btn">Join Now</button>
+            </div>
+            <div class="plan-card fade-in delay-1">
+                <h3>Dance Class</h3>
+                <div class="price">₹1,500/-</div>
+                <ul>
+                    <li>🕺 No experience needed</li>
+                    <li>🌍 Learn global dance styles</li>
+                    <li>💃 Feel the rhythm</li>
+                    <li>💪 Full-body workout</li>
+                    <li>😊 Instant mood booster</li>
+                    <li>👯 Friendly community</li>
+                </ul>
+                <button class="plan-btn">Join Now</button>
+            </div>
+            <div class="plan-card fade-in delay-2">
+                <h3>Calisthenics</h3>
+                <div class="price">₹1,500/-</div>
+                <ul>
+                    <li>💪 Bodyweight Mastery</li>
+                    <li>🔥 No Gym Needed</li>
+                    <li>✔ Full-Body Strength</li>
+                    <li>✔ Core & Mobility</li>
+                    <li>✔ Explosive Power</li>
+                    <li>✔ Progressive Training</li>
+                </ul>
+                <button class="plan-btn">Join Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Class Schedules -->
+    <section class="class-schedules">
+        <h2 class="section-title fade-in">Class Schedules</h2>
+        <div class="schedule-container fade-in">
+            <div class="schedule-content">
+                <h3>Flexible Training Hours</h3>
+                <p>We offer flexible class schedules to accommodate your busy lifestyle. Our gym is open from 6 am to 10 pm every day except Sunday.</p>
+                <p>Whether you're an early bird or a night owl, we have classes that fit your schedule. Our group classes include HIIT, yoga, strength training, and more.</p>
+                <p>Personal training sessions can be scheduled at your convenience with our certified trainers.</p>
+            </div>
+            <div class="schedule-image">
+                <img src="https://i.pinimg.com/736x/b0/3c/e5/b03ce54af40c1ff0682db0e0221737d1.jpg" alt="Class Schedule">
+            </div>
+        </div>
+    </section>
+
+    <!-- Diet Plan -->
+    <section class="diet-plan">
+        <h2 class="section-title fade-in">Diet Plan</h2>
+        <div class="diet-container fade-in">
+            <div class="diet-image">
+                <img src="https://i.pinimg.com/474x/6c/e3/b2/6ce3b2be792cdd262d3bc338f4268687.jpg" alt="Healthy Food">
+            </div>
+            <div class="diet-content">
+                <h3>Nutrition Guidance</h3>
+                <p>📊 Daily Macros (Indian Foods)<br>
+                💪 Protein: 1.6-2.2g/kg (Eggs 🥚, Chicken 🍗, Paneer 🧀, Dal 🌱)</p>
+                
+                <p>⚡ Carbs: 3-5g/kg (Brown Rice 🍚, Roti 🫓, Oats 🥣)</p>
+                
+                <p>🫒 Fats: 0.8-1g/kg (Ghee 🧈, Nuts 🥜, Coconut 🥥)</p>
+                
+                <p>⏰ Meal Timing (When to Eat?)<br>
+                Pre-Workout (1-2h before) ⚡ – Carbs + protein (banana + peanut butter)<br>
+                Post-Workout (30-60min after) 💪 – Protein + carbs (chicken + rice)<br>
+                Snacks 🥜 – Nuts, Greek yogurt, protein shake</p>
+                <button class="diet-details-btn" id="dietDetailsBtn">View Full 7-Day Plan</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workout Routine -->
+    <section class="workout-routine">
+        <h2 class="section-title fade-in">Daily Routine Workout</h2>
+        <div class="workout-tabs fade-in">
+            <button class="workout-tab active" data-tab="gym">Gym</button>
+            <button class="workout-tab" data-tab="calisthenics">Calisthenics</button>
+        </div>
+        <div class="workout-content active" id="gym-content">
+            <div class="workout-text">
+                <h3>Gym Workout Split</h3>
+                <p>🏋️‍♂️ 6-Day Gym Workout Split<br>
+                Goal: Build muscle 💪, strength 🔥 & endurance 🏃‍♂️<br>
+                Rest Day: Sunday 🧘 (active recovery: yoga/walking)</p>
+                
+                <p>🏋️‍♂️ Gym Essentials<br>
+                Dumbbells 🏋️‍♂️💪 – Versatile for strength training.<br>
+                Barbell ♂️🔥 – For squats, deadlifts, and bench press.<br>
+                Treadmill 🏃‍♂️🌀 – Cardio king.<br>
+                Resistance Bands 🎗️💥 – Portable strength & mobility.<br>
+                Gym Mat 🧘‍♂️🟢 – Stretching & core workouts.</p>
+                <button class="workout-details-btn" id="gymDetailsBtn">View 6-Day Gym Workout Split</button>
+            </div>
+            <div class="workout-image">
+                <img src="https://i.pinimg.com/474x/b0/3c/e5/b03ce54af40c1ff0682db0e0221737d1.jpg" alt="Gym Workout">
+            </div>
+        </div>
+        <div class="workout-content" id="calisthenics-content">
+            <div class="workout-image">
+                <img src="https://i.pinimg.com/736x/f4/81/51/f48151613d6c1b329c50e38ea78693f0.jpg" alt="Calisthenics">
+            </div>
+            <div class="workout-text">
+                <h3>Calisthenics Plan</h3>
+                <p>🏋️‍♂️ 6-Day Calisthenics Plan<br>
+                Goal: Build strength 💪, muscle 🏋️‍♂️, and mobility 🧘‍♂️<br>
+                Rest Day: Sunday (active recovery: yoga/stretching) 🧘‍♀️</p>
+                
+                <p>🤸‍♂️ Skill-Based Moves (Advanced)<br>
+                Muscle-Up (Pull-Up + Dip Combo) 🚪💥⬆️<br>
+                Front Lever (Core & Back Strength) 🏋️‍♂️🌍<br>
+                Planche (Shoulder & Core Mastery) 🔥<br>
+                Human Flag (Full-Body Power) 🚩💪</p>
+                <button class="workout-details-btn" id="calisthenicsDetailsBtn">View 6-Day Calisthenics Plan</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location -->
+    <section class="location" id="location">
+        <h2 class="section-title fade-in">Our Location</h2>
+        <div class="location-container fade-in">
+            <div class="location-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3635.570712666092!2d79.07413837515436!3d21.07967418058246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd4bf1b58fb6519%3A0x6cbe7ba3e9ac2854!2sLakudkar&#39;s%20Fitness%20Gym!5e1!3m2!1sen!2sin!4v1743186760740!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="location-info">
+                <h3>Visit Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Lakudkar's Fitness Gym, Nagpur, Maharashtra</p>
+                <p><i class="fas fa-clock"></i> Training Days: Monday - Sunday</p>
+                <p><i class="fas fa-clock"></i> Training Time: 6 am - 10 pm</p>
+                <p><i class="fas fa-calendar-times"></i> Closed On: Sunday</p>
+                <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                <p><i class="fas fa-envelope"></i> info@lakudkargym.com</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parking -->
+    <section class="parking">
+        <h2 class="section-title fade-in">Parking Information</h2>
+        <div class="parking-image fade-in">
+            <img src="https://tse1.mm.bing.net/th?id=OIP.Oke_TneWMJ1b0_M4kWrSKwHaFj&pid=Api&P=0&h=180" alt="Parking Area">
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact">
+        <h2 class="section-title fade-in">Contact Us</h2>
+        <div class="contact-container fade-in">
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject">
+                </div>
+                <div class="form-group full-width">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Lakudkar Gym</h3>
+                <p>Transform your fitness journey with our expert trainers and state-of-the-art facilities. We're committed to helping you achieve your health and fitness goals.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#membership">Membership Plans</a></li>
+                    <li><a href="#location">Location</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Nagpur, Maharashtra</li>
+                    <li><i class="fas fa-phone"></i> +91 9876543210</li>
+                    <li><i class="fas fa-envelope"></i> info@lakudkargym.com</li>
+                    <li><i class="fas fa-clock"></i> Mon-Sat: 6am - 10pm</li>
+                    <li><i class="fas fa-clock"></i> Sun: Closed</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Lakudkar Gym. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
+        </div>
+    </footer>
+
+    <!-- Diet Plan Modal -->
+    <div class="modal" id="dietModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>7-Day Diet Plan</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>📅 7-Day Plan</h3>
+                
+                <h4>Day 1 🏋️‍♂️ (Strength Training - High Protein)</h4>
+                <p>🌅 Pre-Workout: Banana 🍌 + Peanut Butter 🥜 + Milk 🥛</p>
+                <p>🏋️‍♂️ Post-Workout: Roti 🫓 + Chicken Curry 🍗 + Dal 🌱 + Cucumber Salad 🥒</p>
+                <p>☕ Snack: Sprout Chaat 🌱 + Almonds 🥜</p>
+                <p>🌙 Dinner: Brown Rice 🍚 + Fish Curry 🐟 + Bhindi Sabzi 🥗</p>
+                
+                <h4>Day 2 🏃‍♂️ (HIIT - Moderate Carb)</h4>
+                <p>🌅 Pre-Workout: Poha 🍚 + Boiled Egg 🥚</p>
+                <p>🏃‍♂️ Post-Workout: Quinoa 🍛 + Moong Dal 🌱 + Curd 🥄</p>
+                <p>☕ Snack: Greek Yogurt 🥣 + Chia Seeds ✨</p>
+                <p>🌙 Dinner: Jowar Roti 🫓 + Palak Paneer 🧀 + Sprouts 🌱</p>
+                
+                <h4>Day 3 🦵 (Leg Day - High Energy)</h4>
+                <p>🌅 Pre-Workout: Oats 🥣 + Whey 💊 + Dates 🍇</p>
+                <p>🦵 Post-Workout: Rice 🍚 + Mutton Curry 🍖 + Beetroot Salad 🥗</p>
+                <p>☕ Snack: Chana Chaat 🌱 + Green Chutney 🍃</p>
+                <p>🌙 Dinner: Bajra Roti 🫓 + Dal Tadka 🌱 + Mushrooms �</p>
+                
+                <h4>Day 4 💪 (Upper Body - Balanced)</h4>
+                <p>🌅 Pre-Workout: Upma 🍛 + Buttermilk 🥛</p>
+                <p>💪 Post-Workout: Roti 🫓 + Egg Bhurji 🍳 + Curd 🥄</p>
+                <p>☕ Snack: Makhana 🍿 + Ghee �</p>
+                <p>🌙 Dinner: Khichdi 🍚 + Kadhi 🥣</p>
+                
+                <h4>Day 5 🚴 (Endurance - Carb Cycling)</h4>
+                <p>🌅 Pre-Workout: Idli 🍘 + Sambar 🍛</p>
+                <p>🚴 Post-Workout: Brown Rice 🍚 + Grilled Fish 🐟 + Lauki Sabzi 🥗</p>
+                <p>☕ Snack: Fruit Salad 🍉 + Walnuts 🥜</p>
+                <p>🌙 Dinner: Missi Roti 🫓 + Dal 🌱 + Bhindi Sabzi 🥗</p>
+                
+                <h4>Day 6 🧘 (Active Recovery - Low Carb)</h4>
+                <p>🌅 Breakfast: Egg Whites 🥚 + Spinach Omelet 🍳</p>
+                <p>🍽️ Lunch: Quinoa 🍛 + Chana Masala 🌱 + Cucumber Raita 🥒</p>
+                <p>☕ Snack: Coconut Water 🥥 + Pumpkin Seeds 🎃</p>
+                <p>🌙 Dinner: Tofu 🧈 + Mushroom Soup 🍄</p>
+                
+                <h4>Day 7 🛌 (Rest Day - Flexible)</h4>
+                <p>🍳 Brunch: Dosa 🍘 + Sambar 🍛 + Flaxseed Chutney ✨</p>
+                <p>☕ Snack: Lassi 🥛 + Sunflower Seeds 🌻</p>
+                <p>Muscle Gain 💪: Add ghee 🧈 or extra eggs 🥚.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gym Workout Modal -->
+    <div class="modal" id="gymModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>6-Day Gym Workout Split</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Day 1️⃣ (Monday): Chest & Triceps</h4>
+                <p>Flat Bench Press – 4x6-8 🏋️‍♂️</p>
+                <p>Incline Dumbbell Press – 3x8-10 🏋️‍♀️</p>
+                <p>Cable Flys – 3x12 ✨</p>
+                <p>Triceps Dips – 3xMAX 💪</p>
+                <p>Skull Crushers – 3x10-12 🦾</p>
+                <p>(Finish: 10 min incline treadmill walk 🚶‍♂️)</p>
+                
+                <h4>Day 2️⃣ (Tuesday): Back & Biceps</h4>
+                <p>Pull-Ups – 4x6-8 (add weight if advanced) 🏋️‍♂️</p>
+                <p>Barbell Rows – 3x8-10 🏋️‍♀️</p>
+                <p>Lat Pulldown – 3x10-12 🔄</p>
+                <p>Deadlifts – 3x5 (heavy!) ⚡</p>
+                <p>Hammer Curls – 3x12 💥</p>
+                <p>(Stretch: 5 min lats/biceps 🧘)</p>
+                
+                <h4>Day 3️⃣ (Wednesday): Legs (Quads Focus)</h4>
+                <p>Squats – 4x6-8 🦵</p>
+                <p>Bulgarian Split Squats – 3x8/leg 🏋️‍♀️</p>
+                <p>Leg Press – 3x10-12 🚂</p>
+                <p>Leg Extensions – 3x15 (slow!) 🐢</p>
+                <p>Calf Raises – 4x15 👟</p>
+                <p>(Cool down: 5 min bike 🚴‍♂️)</p>
+                
+                <h4>Day 4️⃣ (Thursday): Shoulders & Abs</h4>
+                <p>Overhead Press – 4x6-8 🏋️‍♂️</p>
+                <p>Lateral Raises – 3x12-15 ✈️</p>
+                <p>Face Pulls – 3x15 🔄</p>
+                <p>Hanging Leg Raises – 3x12-15 🦵</p>
+                <p>Russian Twists – 3x20/side 🔄</p>
+                <p>(Finish: 10 min rowing 🚣‍♂️)</p>
+                
+                <h4>Day 5️⃣ (Friday): Arms (Hypertrophy)</h4>
+                <p>Close-Grip Bench – 3x10-12 🏋️‍♂️</p>
+                <p>EZ Bar Curls – 3x10-12 💪</p>
+                <p>Triceps Rope Pushdown – 3x12-15 🦾</p>
+                <p>Preacher Curls – 3x12 🔥</p>
+                <p>(Superset biceps/triceps for pump! 💥)</p>
+                
+                <h4>Day 6️⃣ (Saturday): Legs (Hamstrings/Glutes) + HIIT</h4>
+                <p>Romanian Deadlifts – 4x8 🏋️‍♀️</p>
+                <p>Hip Thrusts – 3x10-12 🍑</p>
+                <p>Leg Curls – 3x12-15 🦵</p>
+                <p>Farmer's Walk – 3x30 sec 🚶‍♂️</p>
+                <p>HIIT Finisher:</p>
+                <p>30 sec Sprint / 30 sec Walk – 8 rounds ⚡</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calisthenics Modal -->
+    <div class="modal" id="calisthenicsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>6-Day Calisthenics Plan</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>Day 1️⃣ (Monday): Upper Body Push</h4>
+                <p>Push-Ups – 4x12-15 🏋️‍♂️ (slow, full range)</p>
+                <p>Pike Push-Ups – 3x8-10 ✋ (shoulder focus)</p>
+                <p>Dips (Parallel Bars/Chair) – 3x8-10 🔄</p>
+                <p>Handstand Holds – 3x20-30 sec ⏳ (against wall)</p>
+                <p>Triceps Extensions – 3x10-12 🦾</p>
+                <p>(Finish: 5 min wrist mobility drills ✋)</p>
+                
+                <h4>Day 2️⃣ (Tuesday): Upper Body Pull</h4>
+                <p>Pull-Ups – 4x6-8 🏋️‍♂️ (strict form)</p>
+                <p>Bodyweight Rows (Table/TRX) – 3x10-12 🔄</p>
+                <p>Archer Rows – 3x6/side 🎯 (scaled: feet on ground)</p>
+                <p>Hanging Leg Raises – 3x12-15 🦵</p>
+                <p>Plank to Failure – 3xMAX ⏳</p>
+                <p>(Stretch: 5 min lats & biceps 🧘‍♂️)</p>
+                
+                <h4>Day 3️⃣ (Wednesday): Legs & Core</h4>
+                <p>Pistol Squats – 3x5/side 🦵 (assisted if needed)</p>
+                <p>Jump Squats – 3x12-15 ⚡</p>
+                <p>Nordic Hamstring Curls – 3x6-8 🏋️‍♀️ (slow negatives)</p>
+                <p>L-Sit Holds – 3x15-20 sec ⏳ (tucked if advanced)</p>
+                <p>Dragon Flags – 3x6-8 🐉 (scaled: negatives)</p>
+                <p>(Cool down: 5 min hip stretches 🧘‍♀️)</p>
+                
+                <h4>Day 4️⃣ (Thursday): Skill & Mobility</h4>
+                <p>Handstand Practice – 10 min ✋ (wall holds/kicks)</p>
+                <p>Front Lever Progressions – 3x8-10 sec 🏋️‍♂️ (tuck/adv. tuck)</p>
+                <p>Planche Lean Holds – 3x20-30 sec ⏳</p>
+                <p>Skin the Cat – 3x5 🔄 (shoulder mobility)</p>
+                <p>Bridge Holds – 3x20 sec 🌉</p>
+                <p>(Focus: Form over reps! 👀)</p>
+                
+                <h4>Day 5️⃣ (Friday): Full Body HIIT</h4>
+                <p>Burpees – 4x10 ⚡</p>
+                <p>Mountain Climbers – 3x20/side 🏔️</p>
+                <p>Explosive Push-Ups – 3x8 💥</p>
+                <p>Jump Lunges – 3x12/side 🦵</p>
+                <p>Plank Jacks – 3x30 sec ⏳</p>
+                <p>(Finisher: 5 min jump rope 🏃‍♂️)</p>
+                
+                <h4>Day 6️⃣ (Saturday): Freestyle & Play</h4>
+                <p>Muscle-Up Progressions – 10 min 🏋️‍♂️</p>
+                <p>Human Flag Practice – 3x5 sec/side 🚩</p>
+                <p>Handstand Walks – 3x10 steps 🚶‍♂️</p>
+                <p>Parkour Basics – Vaults/Rolling 🏃‍♂️</p>
+                <p>(Have fun! 😄)</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.querySelector('.preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    // Initialize animations after preloader is hidden
+                    initAnimations();
+                }, 500);
+            }, 1000);
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+
+        mobileMenuBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('show');
+            const icon = this.querySelector('i');
+            if (navMenu.classList.contains('show')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav ul li a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                // Close mobile menu if open
+                if (navMenu.classList.contains('show')) {
+                    navMenu.classList.remove('show');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Workout Tabs
+        const workoutTabs = document.querySelectorAll('.workout-tab');
+        const workoutContents = document.querySelectorAll('.workout-content');
+
+        workoutTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs and contents
+                workoutTabs.forEach(t => t.classList.remove('active'));
+                workoutContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById(`${tabId}-content`).classList.add('active');
+            });
+        });
+
+        // Modal functionality
+        const dietDetailsBtn = document.getElementById('dietDetailsBtn');
+        const gymDetailsBtn = document.getElementById('gymDetailsBtn');
+        const calisthenicsDetailsBtn = document.getElementById('calisthenicsDetailsBtn');
+        const dietModal = document.getElementById('dietModal');
+        const gymModal = document.getElementById('gymModal');
+        const calisthenicsModal = document.getElementById('calisthenicsModal');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+
+        dietDetailsBtn.addEventListener('click', () => {
+            dietModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        gymDetailsBtn.addEventListener('click', () => {
+            gymModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        calisthenicsDetailsBtn.addEventListener('click', () => {
+            calisthenicsModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    modal.style.display = 'none';
+                });
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Contact form submission
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Here you would typically send the form data to a server
+            // For demonstration, we'll just log it and show an alert
+            console.log({ name, email, phone, subject, message });
+            
+            // In a real implementation, you would use fetch or AJAX to send the data
+            // to your server which would then send the email
+            
+            alert('Thank you for your message! We will contact you soon.');
+            contactForm.reset();
+        });
+
+        // Three.js Initialization
+        function initThreeJS() {
+            const container = document.getElementById('threejs-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            // Scene
+            const scene = new THREE.Scene();
+            scene.background = null;
+
+            // Camera
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            camera.position.z = 5;
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xd4af37, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+
+            // Dumbbell Model
+            const createDumbbell = () => {
+                const group = new THREE.Group();
+
+                // Bar
+                const barGeometry = new THREE.CylinderGeometry(0.1, 0.1, 2, 32);
+                const barMaterial = new THREE.MeshPhongMaterial({ 
+                    color: 0x333333,
+                    specular: 0xd4af37,
+                    shininess: 30
+                });
+                const bar = new THREE.Mesh(barGeometry, barMaterial);
+                group.add(bar);
+
+                // Weights
+                const weightGeometry = new THREE.CylinderGeometry(0.5, 0.5, 0.3, 32);
+                const weightMaterial = new THREE.MeshPhongMaterial({ 
+                    color: 0x777777,
+                    specular: 0xffffff,
+                    shininess: 50
+                });
+
+                const weight1 = new THREE.Mesh(weightGeometry, weightMaterial);
+                weight1.position.y = 1.15;
+                group.add(weight1);
+
+                const weight2 = new THREE.Mesh(weightGeometry, weightMaterial);
+                weight2.position.y = -1.15;
+                group.add(weight2);
+
+                return group;
+            };
+
+            // Create multiple dumbbells
+            const dumbbells = [];
+            const dumbbellCount = 5;
+
+            for (let i = 0; i < dumbbellCount; i++) {
+                const dumbbell = createDumbbell();
+                // Position dumbbells randomly in space
+                dumbbell.position.x = (Math.random() - 0.5) * 10;
+                dumbbell.position.y = (Math.random() - 0.5) * 10;
+                dumbbell.position.z = (Math.random() - 0.5) * 10;
+                
+                // Random size
+                const scale = 0.3 + Math.random() * 0.2;
+                dumbbell.scale.set(scale, scale, scale);
+                
+                // Random rotation
+                dumbbell.rotation.x = Math.random() * Math.PI;
+                dumbbell.rotation.y = Math.random() * Math.PI;
+                
+                scene.add(dumbbell);
+                dumbbells.push(dumbbell);
+            }
+
+            // Animation
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                // Rotate dumbbells
+                dumbbells.forEach((dumbbell, index) => {
+                    dumbbell.rotation.x += 0.005;
+                    dumbbell.rotation.y += 0.007;
+                    
+                    // Add subtle floating effect
+                    dumbbell.position.y += Math.sin(Date.now() * 0.001 + index) * 0.001;
+                });
+
+                renderer.render(scene, camera);
+            };
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            });
+
+            animate();
+        }
+
+        // Initialize animations with GSAP
+        function initAnimations() {
+            // Initialize Three.js
+            initThreeJS();
+
+            // GSAP animations for scroll-triggered elements
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animate elements with fade-in class
+            document.querySelectorAll('.fade-in').forEach(el => {
+                gsap.from(el, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: el,
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
+                });
+            });
+
+            // Animate plan cards with stagger
+            gsap.from('.plan-card', {
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                stagger: 0.2,
+                scrollTrigger: {
+                    trigger: '.membership-plans',
+                    start: "top 70%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // Floating effect for some elements
+            gsap.to('.logo-container img', {
+                y: 10,
+                duration: 3,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            // Hero text animation
+            gsap.to('.hero h1', {
+                y: 10,
+                duration: 3,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+
+            // Create floating particles
+            createParticles();
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const particleCount = 30;
+            const container = document.querySelector('body');
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 5 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random opacity
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                // Random animation duration and delay
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // The actual initialization happens after preloader is done
+        });
+    </script>
+</body>
+</html>
